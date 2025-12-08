@@ -26,15 +26,43 @@ class BlogArticle:
         # Parse published_at if it's a string
         if isinstance(self.published_at, str):
             try:
-                self.published_at = datetime.fromisoformat(self.published_at.replace('Z', '+00:00'))
-            except:
+                # Handle ISO format with or without timezone
+                date_str = self.published_at.replace('Z', '+00:00')
+                self.published_at = datetime.fromisoformat(date_str)
+                # Convert to naive UTC datetime for easier comparison
+                if self.published_at.tzinfo is not None:
+                    from datetime import timezone
+                    self.published_at = self.published_at.astimezone(timezone.utc).replace(tzinfo=None)
+            except Exception as e:
+                print(f"Error parsing date {self.published_at}: {e}")
                 self.published_at = None
     
     def is_published(self) -> bool:
         """Check if article is published"""
         if not self.published_at:
             return False
-        return self.published_at <= datetime.utcnow()
+        # Handle timezone-aware and naive datetimes
+        now = datetime.utcnow()
+        published = self.published_at
+        
+        # If published_at is timezone-aware, make now aware too
+        if published.tzinfo is not None:
+            from datetime import timezone
+            now = datetime.now(timezone.utc)
+            # If published_at has timezone info, convert to UTC for comparison
+            if published.tzinfo != timezone.utc:
+                published = published.astimezone(timezone.utc).replace(tzinfo=None)
+        else:
+            # Both are naive, use utcnow() without timezone
+            now = datetime.utcnow()
+        
+        # Compare naive datetimes
+        if published.tzinfo is not None:
+            published = published.replace(tzinfo=None)
+        if now.tzinfo is not None:
+            now = now.replace(tzinfo=None)
+            
+        return published <= now
     
     def to_dict(self) -> dict:
         """Convert to dictionary"""
