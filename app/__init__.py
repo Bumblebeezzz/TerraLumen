@@ -44,8 +44,13 @@ def create_app(config_name='development'):
     
     @login_manager.user_loader
     def load_user(user_id):
-        from app.models import User
-        return User.query.get(int(user_id))
+        """Load user by ID for Flask-Login"""
+        try:
+            from app.models import User
+            return User.query.get(int(user_id))
+        except Exception:
+            # Return None if user not found or database error
+            return None
     
     # Register blueprints
     from app.routes import main_bp
