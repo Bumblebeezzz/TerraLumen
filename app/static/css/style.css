@@ -111,28 +111,30 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--color-forest-green);
     margin-bottom: var(--spacing-md);
     letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
-    background: linear-gradient(135deg, #1A3C34 0%, #7CC2B7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-forest-green);
+    text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9), 0 1px 4px rgba(0, 0, 0, 0.15);
 }
 
 h2 {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 600;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.85), 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 h3 {
     font-size: clamp(1.5rem, 3vw, 2rem);
+    text-shadow: 0 1px 6px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 h4 {
     font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    text-shadow: 0 1px 5px rgba(255, 255, 255, 0.75), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 p {
@@ -482,6 +484,7 @@ img {
     font-size: 1.75rem;
     color: var(--color-forest-green);
     margin-bottom: var(--spacing-sm);
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card-body {

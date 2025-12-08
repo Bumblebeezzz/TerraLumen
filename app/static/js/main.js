@@ -22,20 +22,22 @@ function createParticles() {
 
 // Control video playback speed (30% slower = 0.7 speed)
 function setupHeroVideo() {
-    const video = document.querySelector('.hero-video');
-    if (video) {
-        video.playbackRate = 0.7; // 30% slower
-        video.loop = true;
-        video.muted = true;
-        video.playsInline = true;
-        
-        // Ensure video plays
-        video.addEventListener('loadedmetadata', function() {
-            video.play().catch(function(error) {
-                console.log('Video autoplay prevented:', error);
+    const videos = document.querySelectorAll('.hero-video');
+    videos.forEach(function(video) {
+        if (video) {
+            video.playbackRate = 0.7; // 30% slower
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            
+            // Ensure video plays
+            video.addEventListener('loadedmetadata', function() {
+                video.play().catch(function(error) {
+                    console.log('Video autoplay prevented:', error);
+                });
             });
-        });
-    }
+        }
+    });
 }
 
 // Mobile Navigation Toggle
