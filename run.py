@@ -4,13 +4,18 @@ Application entry point
 
 import os
 from app import create_app, db
-from app.models import User, Article, MembershipTransaction
 
 app = create_app()
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': User, 'Article': Article, 'MembershipTransaction': MembershipTransaction}
+    """Shell context for Flask CLI"""
+    try:
+        from app.models import User, Article, MembershipTransaction
+        return {'db': db, 'User': User, 'Article': Article, 'MembershipTransaction': MembershipTransaction}
+    except Exception:
+        # Return minimal context if models can't be imported
+        return {'db': db}
 
 if __name__ == '__main__':
     # Use environment variable for port (Render sets PORT)

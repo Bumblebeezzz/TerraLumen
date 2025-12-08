@@ -66,9 +66,17 @@ def create_app(config_name='development'):
     
     @app.errorhandler(500)
     def internal_server_error(error):
+        """Handle 500 errors"""
         from flask import render_template
-        db.session.rollback()
-        return render_template('errors/500.html'), 500
+        try:
+            db.session.rollback()
+        except Exception:
+            pass  # Ignore rollback errors if database is not available
+        try:
+            return render_template('errors/500.html'), 500
+        except Exception:
+            # Fallback if template is missing
+            return '<h1>500 Server Error</h1><p>An error occurred.</p>', 500
     
     return app
 
