@@ -3,7 +3,6 @@ Main public routes
 """
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
-from app.models import Article, User
 from app import db
 from datetime import datetime
 
