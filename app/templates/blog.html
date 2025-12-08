@@ -65,8 +65,7 @@
                             {% if article.excerpt %}
                                 <p>{{ article.excerpt }}</p>
                             {% elif article.content %}
-                                {% set clean_content = article.content|replace('<h2>', ' ')|replace('</h2>', ' ')|replace('<h3>', ' ')|replace('</h3>', ' ')|replace('<p>', ' ')|replace('</p>', ' ')|replace('<ul>', ' ')|replace('</ul>', ' ')|replace('<li>', ' ')|replace('</li>', ' ')|replace('&nbsp;', ' ')|trim %}
-                                <p>{{ clean_content[:200] }}{% if clean_content|length > 200 %}...{% endif %}</p>
+                                <p>{{ article.excerpt if article.excerpt else (article.content[:200] + '...' if article.content|length > 200 else article.content) }}</p>
                             {% else %}
                                 <p>No content available.</p>
                             {% endif %}
