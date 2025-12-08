@@ -57,10 +57,12 @@
                         </div>
                         
                         <div class="card-body">
-                            <p>{{ article.excerpt or (article.content[:200] + '...' if article.content and article.content|length > 200 else (article.content or '')) }}</p>{% if article.excerpt %}
+                            {% if article.excerpt %}
                                 <p>{{ article.excerpt }}</p>
+                            {% elif article.content %}
+                                <p>{{ (article.content|striptags)[:200] }}{% if article.content|length > 200 %}...{% endif %}</p>
                             {% else %}
-                                <p>{{ article.content[:200] }}...</p>
+                                <p>No content available.</p>
                             {% endif %}
                         </div>
                         
@@ -82,7 +84,7 @@
                         </a>
                     {% endif %}
                     
-                    {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% for page_num in range(1, pagination.pages + 1) %}
                         {% if page_num %}
                             {% if page_num == pagination.page %}
                                 <span class="btn btn-primary" style="cursor: default;">
