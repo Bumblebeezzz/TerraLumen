@@ -41,26 +41,14 @@ class BlogArticle:
         """Check if article is published"""
         if not self.published_at:
             return False
-        # Handle timezone-aware and naive datetimes
+        # Convert both to naive UTC datetimes for comparison
         now = datetime.utcnow()
         published = self.published_at
         
-        # If published_at is timezone-aware, make now aware too
+        # Remove timezone info if present
         if published.tzinfo is not None:
             from datetime import timezone
-            now = datetime.now(timezone.utc)
-            # If published_at has timezone info, convert to UTC for comparison
-            if published.tzinfo != timezone.utc:
-                published = published.astimezone(timezone.utc).replace(tzinfo=None)
-        else:
-            # Both are naive, use utcnow() without timezone
-            now = datetime.utcnow()
-        
-        # Compare naive datetimes
-        if published.tzinfo is not None:
-            published = published.replace(tzinfo=None)
-        if now.tzinfo is not None:
-            now = now.replace(tzinfo=None)
+            published = published.astimezone(timezone.utc).replace(tzinfo=None)
             
         return published <= now
     
