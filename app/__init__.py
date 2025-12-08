@@ -34,8 +34,16 @@ def create_app(config_name='development'):
     login_manager.init_app(app)
     csrf.init_app(app)
     
-    # Database initialization will be handled by migrations or manual setup
-    # Removed automatic db.create_all() to avoid issues during app startup
+    # Initialize database tables on first run (only if using SQLite, not PostgreSQL)
+    # For PostgreSQL on Render, use migrations instead
+    with app.app_context():
+        try:
+            # Only create tables if using SQLite (development)
+            if 'sqlite' in app.config.get('SQLALCHEMY_DATABASE_URI', ''):
+                db.create_all()
+        except Exception as e:
+            # Ignore errors - tables might already exist or migrations will handle it
+            pass
     
     # Configure login manager
     login_manager.login_view = 'auth.login'
