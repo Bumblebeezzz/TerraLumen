@@ -46,7 +46,12 @@
                             </h2>
                             <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: 0;">
                                 {% if article.published_at %}
-                                    {{ article.published_at.strftime('%B %d, %Y') }}
+                                    {% set pub_date = article.published_at %}
+                                    {% if pub_date.strftime %}
+                                        {{ pub_date.strftime('%B %d, %Y') }}
+                                    {% else %}
+                                        {{ pub_date }}
+                                    {% endif %}
                                 {% endif %}
                                 {% if article.is_member_only %}
                                     <span style="color: var(--color-soft-gold); font-weight: 600; margin-left: var(--spacing-sm);">

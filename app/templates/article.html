@@ -23,7 +23,7 @@
                 <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap; color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-md);">
                     {% if article.published_at %}
                         <span>
-                            Published: {{ article.published_at.strftime('%B %d, %Y') }}
+                            Published: {% if article.published_at.strftime %}{{ article.published_at.strftime('%B %d, %Y') }}{% else %}{{ article.published_at }}{% endif %}
                         </span>
                     {% endif %}
                     {% if article.author %}
