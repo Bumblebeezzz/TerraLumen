@@ -65,7 +65,8 @@
                             {% if article.excerpt %}
                                 <p>{{ article.excerpt }}</p>
                             {% elif article.content %}
-                                <p>{{ article.excerpt if article.excerpt else (article.content[:200] + '...' if article.content|length > 200 else article.content) }}</p>
+                                {% set preview = article.content[:200] %}
+                                <p>{{ preview }}{% if article.content|length > 200 %}...{% endif %}</p>
                             {% else %}
                                 <p>No content available.</p>
                             {% endif %}
