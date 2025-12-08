@@ -34,12 +34,8 @@ def create_app(config_name='development'):
     login_manager.init_app(app)
     csrf.init_app(app)
     
-    # Initialize database tables on first run
-    with app.app_context():
-        try:
-            db.create_all()
-        except Exception:
-            pass  # Tables might already exist
+    # Database initialization will be handled by migrations or manual setup
+    # Removed automatic db.create_all() to avoid issues during app startup
     
     # Configure login manager
     login_manager.login_view = 'auth.login'
