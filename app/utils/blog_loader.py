@@ -54,7 +54,10 @@ class BlogArticle:
 def load_blog_articles() -> List[BlogArticle]:
     """Load all blog articles from JSON files"""
     articles = []
-    blog_dir = Path(__file__).resolve().parent.parent.parent / 'app' / 'data' / 'blog'
+    # Get the project root directory
+    current_file = Path(__file__).resolve()
+    # Go up: utils -> app -> terralumen_website
+    blog_dir = current_file.parent.parent.parent / 'app' / 'data' / 'blog'
     
     # Create directory if it doesn't exist
     blog_dir.mkdir(parents=True, exist_ok=True)
@@ -62,6 +65,9 @@ def load_blog_articles() -> List[BlogArticle]:
     # Load articles from JSON files
     if blog_dir.exists():
         for json_file in blog_dir.glob('*.json'):
+            # Skip .gitkeep and other non-article files
+            if json_file.name.startswith('.'):
+                continue
             try:
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
@@ -72,7 +78,7 @@ def load_blog_articles() -> List[BlogArticle]:
                 continue
     
     # Sort by published_at (newest first)
-    articles.sort(key=lambda x: x.published_at or datetime.min, reverse=True)
+    articles.sort(key=lambda x: x.published_at if x.published_at else datetime.min, reverse=True)
     
     return articles
 
