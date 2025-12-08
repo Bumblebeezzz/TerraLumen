@@ -7,6 +7,11 @@
 {% block content %}
 <!-- Page Header -->
 <section class="hero" style="padding: var(--spacing-xl) 0;">
+    <!-- Background Video -->
+    <video class="hero-video" autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='video/terralumen-blog.mp4') }}" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
     <div class="container">
         <div class="hero-content">
             <h1 class="hero-title">TerraLumen Blog</h1>
