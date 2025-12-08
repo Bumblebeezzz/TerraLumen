@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Member Dashboard - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="text-center mb-3">
+            <h1>Welcome, {{ current_user.name }}!</h1>
+            <p style="font-size: 1.125rem;">Your TerraLumen Member Dashboard</p>
+        </div>
+        
+        <!-- Membership Status Card -->
+        <div class="card mb-3" style="max-width: 800px; margin: 0 auto var(--spacing-lg);">
+            <div class="card-header">
+                <h2 class="card-title">Membership Status</h2>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md);">
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Type</p>
+                        <p style="font-size: 1.125rem; font-weight: 600; color: var(--color-forest-green);">
+                            {{ current_user.membership_type.value.title() if current_user.membership_type else 'Not Set' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Status</p>
+                        <p style="font-size: 1.125rem; font-weight: 600; 
+                                  color: {% if current_user.membership_status.value == 'active' %}var(--color-plasma-aqua){% else %}var(--color-charcoal){% endif %};">
+                            {{ current_user.membership_status.value.title() if current_user.membership_status else 'Inactive' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Member Since</p>
+                        <p style="font-size: 1.125rem; font-weight: 600; color: var(--color-forest-green);">
+                            {{ current_user.created_at.strftime('%B %Y') if current_user.created_at else 'N/A' }}
+                        </p>
+                    </div>
+                </div>
+                
+                {% if not current_user.is_active_member() %}
+                    <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: rgba(212, 175, 55, 0.1); border-radius: var(--radius-md); border-left: 4px solid var(--color-soft-gold);">
+                        <p style="margin-bottom: var(--spacing-sm);">
+                            <strong>Complete Your Membership</strong>
+                        </p>
+                        <p style="margin-bottom: var(--spacing-md);">
+                            Your membership is currently pending. Complete your payment to activate all member benefits.
+                        </p>
+                        <a href="{{ url_for('main.membership') }}" class="btn btn-primary">
+                            Complete Membership
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="grid grid-2" style="max-width: 1000px; margin: 0 auto;">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Exclusive Content</h3>
+                </div>
+                <div class="card-body">
+                    <p>Access members-only articles, research findings, and educational content.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('auth.member_content') }}" class="btn btn-secondary" style="width: 100%;">
+                        View Content
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Membership Card</h3>
+                </div>
+                <div class="card-body">
+                    <p>Download your digital membership card as a PDF.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('auth.download_membership_card') }}" class="btn btn-secondary" style="width: 100%;">
+                        Download Card
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Booking Portal</h3>
+                </div>
+                <div class="card-body">
+                    <p>Schedule your healing sessions with priority booking access.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-outline" style="width: 100%;">
+                        Book Session
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Account Settings</h3>
+                </div>
+                <div class="card-body">
+                    <p>Update your profile information and preferences.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-outline" style="width: 100%;">
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

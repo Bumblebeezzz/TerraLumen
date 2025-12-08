@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}TerraLumen - A Private Members Association where natural healing, advanced plasma technologies, and personal sovereignty come together.{% endblock %}">
+    <meta name="keywords" content="healing, hypnotherapy, shamanic healing, Tesla plasma, detoxification, wellness, consciousness">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://terralumen.org{% block og_url %}{{ request.path }}{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}TerraLumen - Natural Healing & Advanced Technologies{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Empowering individuals to restore vitality and live with clarity and purpose.{% endblock %}">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://terralumen.org{% block twitter_url %}{{ request.path }}{% endblock %}">
+    <meta property="twitter:title" content="{% block twitter_title %}TerraLumen - Natural Healing & Advanced Technologies{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Empowering individuals to restore vitality and live with clarity and purpose.{% endblock %}">
+    
+    <title>{% block title %}TerraLumen - Natural Healing & Advanced Technologies{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="{{ url_for('main.index') }}" class="navbar-brand">
+                TerraLumen
+            </a>
+            
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            
+            <ul class="navbar-menu" id="navbarMenu">
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.index') }}" class="navbar-link {% if request.endpoint == 'main.index' %}active{% endif %}">
+                        Home
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.about') }}" class="navbar-link {% if request.endpoint == 'main.about' %}active{% endif %}">
+                        About
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.services') }}" class="navbar-link {% if request.endpoint == 'main.services' %}active{% endif %}">
+                        Services
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.membership') }}" class="navbar-link {% if request.endpoint == 'main.membership' %}active{% endif %}">
+                        Membership
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.blog') }}" class="navbar-link {% if request.endpoint == 'main.blog' %}active{% endif %}">
+                        Blog
+                    </a>
+                </li>
+                <li class="navbar-item">
+                    <a href="{{ url_for('main.contact') }}" class="navbar-link {% if request.endpoint == 'main.contact' %}active{% endif %}">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="navbar-actions">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.dashboard') }}" class="btn btn-small btn-secondary">
+                        Dashboard
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-small btn-outline">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-small btn-outline">
+                        Login
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-small btn-primary">
+                        Join Us
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TerraLumen</h4>
+                    <p>A Private Members Association dedicated to providing affordable, innovative healing modalities and advancing human wellbeing.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="{{ url_for('main.about') }}">About Us</a>
+                    <a href="{{ url_for('main.services') }}">Services</a>
+                    <a href="{{ url_for('main.membership') }}">Membership</a>
+                    <a href="{{ url_for('main.blog') }}">Blog</a>
+                    <a href="{{ url_for('main.contact') }}">Contact</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Suite 266, 19 Brook Rd, Darlington</p>
+                    <p>Phone: <a href="tel:0424900815">0424 900 815</a></p>
+                    <p>Email: <a href="mailto:contact@terralumen.org">contact@terralumen.org</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <p>Stay connected with our community</p>
+                    <!-- Social media links can be added here -->
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TerraLumen. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
+

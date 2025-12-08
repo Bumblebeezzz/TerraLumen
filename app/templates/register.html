@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Register - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 600px;">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1 class="card-title">Join TerraLumen</h1>
+                <p>Create your member account</p>
+            </div>
+            
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('auth.register') }}">
+                    <input type="hidden" name="membership_type" value="{{ membership_type }}">
+                    
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required minlength="8">
+                        <p class="form-help">Password must be at least 8 characters long.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password_confirm" class="form-label">Confirm Password</label>
+                        <input type="password" id="password_confirm" name="password_confirm" class="form-control" required minlength="8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Membership Type</label>
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-weight: normal; cursor: pointer;">
+                                <input type="radio" name="membership_type" value="annual" {% if membership_type == 'annual' %}checked{% endif %}>
+                                Annual Membership
+                            </label>
+                            <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-weight: normal; cursor: pointer;">
+                                <input type="radio" name="membership_type" value="lifetime" {% if membership_type == 'lifetime' %}checked{% endif %}>
+                                Lifetime Membership
+                            </label>
+                            <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-weight: normal; cursor: pointer;">
+                                <input type="radio" name="membership_type" value="supporter" {% if membership_type == 'supporter' %}checked{% endif %}>
+                                Supporter Member (Donation-based)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card-footer text-center">
+                <p>
+                    Already have an account? 
+                    <a href="{{ url_for('auth.login') }}" style="color: var(--color-plasma-aqua); font-weight: 600;">
+                        Log in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

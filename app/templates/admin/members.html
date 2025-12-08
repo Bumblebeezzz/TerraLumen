@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Members - TerraLumen Admin{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 style="margin-bottom: var(--spacing-lg);">Manage Members</h1>
+        
+        {% if members %}
+            <div class="card">
+                <div class="card-body">
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--color-border);">
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Name</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Email</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Type</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Status</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Joined</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members %}
+                                    <tr style="border-bottom: 1px solid var(--color-border);">
+                                        <td style="padding: var(--spacing-sm);">
+                                            <a href="{{ url_for('admin.view_member', user_id=member.id) }}" style="color: var(--color-plasma-aqua); font-weight: 600;">
+                                                {{ member.name }}
+                                            </a>
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">{{ member.email }}</td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ member.membership_type.value.title() if member.membership_type else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            <span style="color: {% if member.membership_status and member.membership_status.value == 'active' %}var(--color-plasma-aqua){% else %}var(--color-charcoal){% endif %};">
+                                                {{ member.membership_status.value.title() if member.membership_status else 'Inactive' }}
+                                            </span>
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ member.created_at.strftime('%Y-%m-%d') if member.created_at else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            <a href="{{ url_for('admin.view_member', user_id=member.id) }}" class="btn btn-small btn-outline">
+                                                View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center">
+                    <p>No members yet.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

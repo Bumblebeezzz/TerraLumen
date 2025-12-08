@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}TerraLumen - Natural Healing & Advanced Technologies{% endblock %}
+
+{% block meta_description %}TerraLumen is a Private Members Association where natural healing, advanced plasma technologies, and personal sovereignty come together. Empowering individuals to restore vitality and live with clarity and purpose.{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">TerraLumen</h1>
+        <p class="hero-subtitle">
+            A Private Members Association where natural healing, advanced plasma technologies, 
+            and personal sovereignty come together. Empowering individuals to restore vitality 
+            and live with clarity and purpose.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-large">
+                Become a Member
+            </a>
+            <a href="{{ url_for('main.services') }}" class="btn btn-secondary btn-large">
+                Learn About Our Services
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction Section -->
+<section class="section">
+    <div class="container">
+        <div class="text-center mb-3">
+            <h2>Welcome to TerraLumen</h2>
+            <p style="max-width: 800px; margin: 0 auto; font-size: 1.125rem;">
+                TerraLumen is a Private Members Association dedicated to providing affordable, 
+                innovative healing modalities—including hypnotherapy, shamanic healing, 
+                detoxification guidance, and Tesla plasma field technologies—to individuals 
+                seeking deeper wellbeing and sovereignty over their own health.
+            </p>
+            <p style="max-width: 800px; margin: 1.5rem auto 0; font-size: 1.125rem;">
+                Founded by Nicole Chiplin and supported by Jonathan King TerraLumen Geological, 
+                our mission is to contribute meaningfully to humanity's evolution through 
+                education, healing, research, and community service.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Overview Section -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="text-center mb-3">
+            <h2>Our Healing Modalities</h2>
+            <p>Comprehensive approaches to wellness and regeneration</p>
+        </div>
+        
+        <div class="grid grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tesla Plasma Healing Sessions</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Advanced non-invasive energy technology designed to support the body's 
+                        natural regenerative processes. Experience cellular and energetic 
+                        regeneration through cutting-edge plasma field technologies.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.services') }}" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Hypnotherapy & Strategic Psychotherapy</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Process-oriented and Ericksonian techniques to reshape inner belief 
+                        structures and restore autonomy. Transform limiting patterns and 
+                        unlock your potential for growth.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.services') }}" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Shamanic & Energetic Healing</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Ancient techniques blended with modern understanding for deep emotional 
+                        and spiritual restoration. Connect with your inner wisdom and restore 
+                        energetic balance.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.services') }}" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Detoxification & Vitality Coaching</h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        Nutrition, natural detox processes, and lifestyle support to cleanse 
+                        and rebuild the body. Restore your vitality through comprehensive 
+                        wellness guidance.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('main.services') }}" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Membership CTA Section -->
+<section class="section">
+    <div class="container">
+        <div class="card" style="background: linear-gradient(135deg, rgba(26, 60, 52, 0.05) 0%, rgba(124, 194, 183, 0.05) 100%); border: 2px solid var(--color-plasma-aqua);">
+            <div class="text-center">
+                <h2>Join Our Community</h2>
+                <p style="font-size: 1.125rem; margin-bottom: var(--spacing-lg);">
+                    Become a TerraLumen member and gain access to exclusive healing services, 
+                    educational resources, research findings, and a supportive community dedicated 
+                    to your wellbeing.
+                </p>
+                <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('main.membership') }}" class="btn btn-primary btn-large">
+                        View Membership Options
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-secondary btn-large">
+                        Sign Up Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 600px;">
+        <div class="card text-center">
+            <div class="card-body" style="padding: var(--spacing-xxl);">
+                <h1 style="font-size: 6rem; color: var(--color-soft-gold); margin-bottom: var(--spacing-md);">500</h1>
+                <h2 style="margin-bottom: var(--spacing-md);">Server Error</h2>
+                <p style="font-size: 1.125rem; margin-bottom: var(--spacing-lg); color: var(--color-charcoal);">
+                    We're experiencing some technical difficulties. Please try again later.
+                </p>
+                <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                        Go Home
+                    </a>
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-outline">
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

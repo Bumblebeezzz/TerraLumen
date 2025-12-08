@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Our Services - TerraLumen{% endblock %}
+
+{% block meta_description %}Explore TerraLumen's healing modalities: Tesla Plasma Healing, Hypnotherapy, Shamanic Healing, and Detoxification programs.{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="hero" style="padding: var(--spacing-xl) 0;">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Our Healing Modalities</h1>
+            <p class="hero-subtitle">
+                Comprehensive approaches to wellness, regeneration, and personal transformation
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section">
+    <div class="container">
+        <!-- Tesla Plasma Healing -->
+        <div class="card mb-3" style="max-width: 1000px; margin: 0 auto var(--spacing-lg);">
+            <div class="card-header">
+                <h2 class="card-title">Tesla Plasma Healing Sessions</h2>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    Advanced non-invasive energy technology designed to support the body's natural 
+                    regenerative processes. Our Tesla plasma field technologies work at the cellular 
+                    and energetic levels to promote healing, balance, and vitality.
+                </p>
+                <p style="font-size: 1.125rem; line-height: 1.8;">
+                    Through carefully calibrated plasma fields, these sessions can help restore 
+                    energetic harmony, support cellular regeneration, and enhance your body's 
+                    innate healing capabilities. This cutting-edge technology represents the 
+                    fusion of scientific innovation with natural healing principles.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.membership') }}" class="btn btn-primary">
+                    Learn About Member Access
+                </a>
+            </div>
+        </div>
+        
+        <!-- Hypnotherapy -->
+        <div class="card mb-3" style="max-width: 1000px; margin: 0 auto var(--spacing-lg);">
+            <div class="card-header">
+                <h2 class="card-title">Hypnotherapy & Strategic Psychotherapy</h2>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    Process-oriented and Ericksonian techniques to reshape inner belief structures 
+                    and restore autonomy. Our therapeutic approach combines the power of the 
+                    subconscious mind with strategic interventions designed to create lasting change.
+                </p>
+                <p style="font-size: 1.125rem; line-height: 1.8;">
+                    Through hypnotherapy, we work with you to identify and transform limiting 
+                    patterns, release emotional blocks, and unlock your potential for growth. 
+                    Our strategic psychotherapy approach addresses both conscious and unconscious 
+                    processes, supporting you in reclaiming your personal power and creating 
+                    the life you desire.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.contact') }}" class="btn btn-secondary">
+                    Schedule a Consultation
+                </a>
+            </div>
+        </div>
+        
+        <!-- Shamanic Healing -->
+        <div class="card mb-3" style="max-width: 1000px; margin: 0 auto var(--spacing-lg);">
+            <div class="card-header">
+                <h2 class="card-title">Shamanic & Energetic Healing</h2>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    Ancient techniques blended with modern understanding for deep emotional and 
+                    spiritual restoration. Our shamanic healing practices honor traditional wisdom 
+                    while integrating contemporary insights into consciousness and energy work.
+                </p>
+                <p style="font-size: 1.125rem; line-height: 1.8;">
+                    These sessions can help you connect with your inner wisdom, restore energetic 
+                    balance, release trauma and emotional patterns, and deepen your spiritual 
+                    connection. We work with energy clearing, soul retrieval, and other time-honored 
+                    practices adapted for modern healing contexts.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.contact') }}" class="btn btn-secondary">
+                    Learn More
+                </a>
+            </div>
+        </div>
+        
+        <!-- Detoxification -->
+        <div class="card mb-3" style="max-width: 1000px; margin: 0 auto var(--spacing-lg);">
+            <div class="card-header">
+                <h2 class="card-title">Detoxification & Vitality Coaching</h2>
+            </div>
+            <div class="card-body">
+                <p style="font-size: 1.125rem; line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    Nutrition, natural detox processes, and lifestyle support to cleanse and rebuild 
+                    the body. Our comprehensive approach addresses the physical, nutritional, and 
+                    lifestyle factors that impact your vitality and wellbeing.
+                </p>
+                <p style="font-size: 1.125rem; line-height: 1.8;">
+                    Through personalized guidance, we help you develop sustainable practices for 
+                    detoxification, optimal nutrition, and lifestyle optimization. Our programs 
+                    are designed to support your body's natural cleansing processes while providing 
+                    the nutrients and practices needed for regeneration and vitality.
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('main.contact') }}" class="btn btn-secondary">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="text-center">
+            <h2>Ready to Begin Your Healing Journey?</h2>
+            <p style="font-size: 1.125rem; margin-bottom: var(--spacing-lg);">
+                Members receive priority booking and exclusive rates on all services.
+            </p>
+            <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('main.membership') }}" class="btn btn-primary btn-large">
+                    Become a Member
+                </a>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-secondary btn-large">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

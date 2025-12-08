@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Exclusive Member Content - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="text-center mb-3">
+            <h1>Exclusive Member Content</h1>
+            <p style="font-size: 1.125rem;">Articles, research, and resources available only to TerraLumen members</p>
+        </div>
+        
+        {% if articles %}
+            <div class="grid grid-2">
+                {% for article in articles %}
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <a href="{{ url_for('main.article', slug=article.slug) }}" 
+                                   style="color: var(--color-forest-green);">
+                                    {{ article.title }}
+                                </a>
+                            </h2>
+                            <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: 0;">
+                                {% if article.published_at %}
+                                    {{ article.published_at.strftime('%B %d, %Y') }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        
+                        <div class="card-body">
+                            {% if article.excerpt %}
+                                <p>{{ article.excerpt }}</p>
+                            {% else %}
+                                <p>{{ article.content[:200] }}...</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card-footer">
+                            <a href="{{ url_for('main.article', slug=article.slug) }}" class="btn btn-outline">
+                                Read Article
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <div class="card-body">
+                    <h2>No exclusive content yet</h2>
+                    <p>Check back soon for members-only articles, research findings, and educational content.</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div style="margin-top: var(--spacing-xl); text-align: center;">
+            <a href="{{ url_for('main.blog') }}" class="btn btn-outline">
+                View All Blog Posts
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

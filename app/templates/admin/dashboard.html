@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="text-center mb-3">
+            <h1>Admin Dashboard</h1>
+        </div>
+        
+        <!-- Statistics -->
+        <div class="grid grid-4 mb-3">
+            <div class="card text-center">
+                <h3 style="font-size: 2.5rem; color: var(--color-plasma-aqua); margin-bottom: var(--spacing-xs);">
+                    {{ total_members }}
+                </h3>
+                <p>Total Members</p>
+            </div>
+            <div class="card text-center">
+                <h3 style="font-size: 2.5rem; color: var(--color-soft-gold); margin-bottom: var(--spacing-xs);">
+                    {{ active_members }}
+                </h3>
+                <p>Active Members</p>
+            </div>
+            <div class="card text-center">
+                <h3 style="font-size: 2.5rem; color: var(--color-plasma-aqua); margin-bottom: var(--spacing-xs);">
+                    {{ total_articles }}
+                </h3>
+                <p>Total Articles</p>
+            </div>
+            <div class="card text-center">
+                <h3 style="font-size: 2.5rem; color: var(--color-soft-gold); margin-bottom: var(--spacing-xs);">
+                    {{ published_articles }}
+                </h3>
+                <p>Published Articles</p>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2 class="card-title">Quick Actions</h2>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                    <a href="{{ url_for('admin.new_article') }}" class="btn btn-primary">
+                        New Article
+                    </a>
+                    <a href="{{ url_for('admin.articles') }}" class="btn btn-secondary">
+                        Manage Articles
+                    </a>
+                    <a href="{{ url_for('admin.members') }}" class="btn btn-outline">
+                        View Members
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Members -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h2 class="card-title">Recent Members</h2>
+            </div>
+            <div class="card-body">
+                {% if recent_members %}
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--color-border);">
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Name</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Email</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Type</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Status</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in recent_members %}
+                                    <tr style="border-bottom: 1px solid var(--color-border);">
+                                        <td style="padding: var(--spacing-sm);">
+                                            <a href="{{ url_for('admin.view_member', user_id=member.id) }}" style="color: var(--color-plasma-aqua);">
+                                                {{ member.name }}
+                                            </a>
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">{{ member.email }}</td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ member.membership_type.value.title() if member.membership_type else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ member.membership_status.value.title() if member.membership_status else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ member.created_at.strftime('%Y-%m-%d') if member.created_at else 'N/A' }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No members yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Recent Articles -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Recent Articles</h2>
+            </div>
+            <div class="card-body">
+                {% if recent_articles %}
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--color-border);">
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Title</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Author</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Status</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Created</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in recent_articles %}
+                                    <tr style="border-bottom: 1px solid var(--color-border);">
+                                        <td style="padding: var(--spacing-sm);">
+                                            <a href="{{ url_for('admin.edit_article', article_id=article.id) }}" style="color: var(--color-plasma-aqua);">
+                                                {{ article.title }}
+                                            </a>
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ article.author.name if article.author else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {% if article.published_at %}
+                                                <span style="color: var(--color-plasma-aqua);">Published</span>
+                                            {% else %}
+                                                <span style="color: var(--color-charcoal);">Draft</span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ article.created_at.strftime('%Y-%m-%d') if article.created_at else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            <a href="{{ url_for('admin.edit_article', article_id=article.id) }}" class="btn btn-small btn-outline">
+                                                Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No articles yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

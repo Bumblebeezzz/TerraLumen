@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - TerraLumen Blog{% endblock %}
+
+{% block meta_description %}{{ article.excerpt or article.content[:160] }}{% endblock %}
+
+{% block content %}
+<!-- Article Header -->
+<section class="section" style="padding-top: var(--spacing-xl);">
+    <div class="container" style="max-width: 800px;">
+        <div class="card">
+            <div class="card-header">
+                {% if article.is_member_only %}
+                    <div style="background: var(--color-soft-gold); color: var(--color-white); padding: var(--spacing-xs) var(--spacing-md); border-radius: var(--radius-md); display: inline-block; margin-bottom: var(--spacing-md); font-weight: 600;">
+                        Members Only
+                    </div>
+                {% endif %}
+                
+                <h1 class="card-title" style="font-size: 2.5rem; margin-bottom: var(--spacing-sm);">
+                    {{ article.title }}
+                </h1>
+                
+                <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap; color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-md);">
+                    {% if article.published_at %}
+                        <span>
+                            Published: {{ article.published_at.strftime('%B %d, %Y') }}
+                        </span>
+                    {% endif %}
+                    {% if article.reading_time() %}
+                        <span>
+                            {{ article.reading_time() }} min read
+                        </span>
+                    {% endif %}
+                    {% if article.author %}
+                        <span>
+                            By {{ article.author.name }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if article.featured_image %}
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <img src="{{ url_for('static', filename='uploads/' + article.featured_image) }}" 
+                         alt="{{ article.title }}" 
+                         style="width: 100%; border-radius: var(--radius-md);">
+                </div>
+            {% endif %}
+            
+            <div class="card-body" style="font-size: 1.125rem; line-height: 1.8;">
+                {% if article.excerpt %}
+                    <p style="font-size: 1.25rem; color: var(--color-charcoal); margin-bottom: var(--spacing-lg); font-style: italic; border-left: 4px solid var(--color-plasma-aqua); padding-left: var(--spacing-md);">
+                        {{ article.excerpt }}
+                    </p>
+                {% endif %}
+                
+                <div style="white-space: pre-wrap;">{{ article.content }}</div>
+            </div>
+            
+            <div class="card-footer" style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md); margin-top: var(--spacing-lg);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
+                    <a href="{{ url_for('main.blog') }}" class="btn btn-outline">
+                        ← Back to Blog
+                    </a>
+                    
+                    {% if article.is_member_only and (not current_user.is_authenticated or not current_user.is_active_member()) %}
+                        <a href="{{ url_for('main.membership') }}" class="btn btn-primary">
+                            Become a Member
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Articles Section (if needed in future) -->
+{% endblock %}
+

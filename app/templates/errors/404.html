@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - TerraLumen{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 600px;">
+        <div class="card text-center">
+            <div class="card-body" style="padding: var(--spacing-xxl);">
+                <h1 style="font-size: 6rem; color: var(--color-plasma-aqua); margin-bottom: var(--spacing-md);">404</h1>
+                <h2 style="margin-bottom: var(--spacing-md);">Page Not Found</h2>
+                <p style="font-size: 1.125rem; margin-bottom: var(--spacing-lg); color: var(--color-charcoal);">
+                    The page you're looking for doesn't exist or has been moved.
+                </p>
+                <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                        Go Home
+                    </a>
+                    <a href="{{ url_for('main.blog') }}" class="btn btn-outline">
+                        Visit Blog
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

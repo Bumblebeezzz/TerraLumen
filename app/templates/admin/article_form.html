@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{% if article %}Edit Article{% else %}New Article{% endif %} - TerraLumen Admin{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 900px;">
+        <div class="card">
+            <div class="card-header">
+                <h1>{% if article %}Edit Article{% else %}New Article{% endif %}</h1>
+            </div>
+            
+            <div class="card-body">
+                <form method="POST" action="{% if article %}{{ url_for('admin.edit_article', article_id=article.id) }}{% else %}{{ url_for('admin.new_article') }}{% endif %}">
+                    <div class="form-group">
+                        <label for="title" class="form-label">Title *</label>
+                        <input type="text" id="title" name="title" class="form-control" required 
+                               value="{{ article.title if article else '' }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="excerpt" class="form-label">Excerpt</label>
+                        <textarea id="excerpt" name="excerpt" class="form-control" rows="3">{{ article.excerpt if article else '' }}</textarea>
+                        <p class="form-help">Short summary of the article (optional)</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content" class="form-label">Content *</label>
+                        <textarea id="content" name="content" class="form-control" rows="15" required>{{ article.content if article else '' }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer;">
+                            <input type="checkbox" name="is_member_only" {% if article and article.is_member_only %}checked{% endif %}>
+                            <span>Members only content</span>
+                        </label>
+                    </div>
+                    
+                    {% if article %}
+                        <div class="form-group">
+                            {% if article.published_at %}
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer;">
+                                    <input type="checkbox" name="unpublish">
+                                    <span>Unpublish article</span>
+                                </label>
+                                <p class="form-help">Published on: {{ article.published_at.strftime('%Y-%m-%d %H:%M') if article.published_at else 'N/A' }}</p>
+                            {% else %}
+                                <label style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer;">
+                                    <input type="checkbox" name="publish_now">
+                                    <span>Publish now</span>
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer;">
+                                <input type="checkbox" name="publish_now">
+                                <span>Publish immediately</span>
+                            </label>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            {% if article %}Update Article{% else %}Create Article{% endif %}
+                        </button>
+                        <a href="{{ url_for('admin.articles') }}" class="btn btn-outline">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

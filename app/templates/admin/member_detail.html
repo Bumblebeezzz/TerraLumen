@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.name }} - TerraLumen Admin{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 1000px;">
+        <div style="margin-bottom: var(--spacing-lg);">
+            <a href="{{ url_for('admin.members') }}" class="btn btn-outline">
+                ← Back to Members
+            </a>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header">
+                <h1>Member Details</h1>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-2">
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Name</p>
+                        <p style="font-size: 1.125rem; font-weight: 600; margin-bottom: var(--spacing-md);">{{ user.name }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Email</p>
+                        <p style="font-size: 1.125rem; margin-bottom: var(--spacing-md);">{{ user.email }}</p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Membership Type</p>
+                        <p style="font-size: 1.125rem; margin-bottom: var(--spacing-md);">
+                            {{ user.membership_type.value.title() if user.membership_type else 'N/A' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Status</p>
+                        <p style="font-size: 1.125rem; margin-bottom: var(--spacing-md);">
+                            {{ user.membership_status.value.title() if user.membership_status else 'Inactive' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Member Since</p>
+                        <p style="font-size: 1.125rem; margin-bottom: var(--spacing-md);">
+                            {{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p style="color: var(--color-charcoal); font-size: 0.875rem; margin-bottom: var(--spacing-xs);">Stripe Customer ID</p>
+                        <p style="font-size: 1.125rem; margin-bottom: var(--spacing-md);">
+                            {{ user.stripe_customer_id or 'N/A' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Payment Transactions</h2>
+            </div>
+            <div class="card-body">
+                {% if transactions %}
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--color-border);">
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Date</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Amount</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Type</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Status</th>
+                                    <th style="padding: var(--spacing-sm); text-align: left;">Payment ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                    <tr style="border-bottom: 1px solid var(--color-border);">
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ transaction.created_at.strftime('%Y-%m-%d %H:%M') if transaction.created_at else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            ${{ "%.2f"|format(transaction.amount) }} {{ transaction.currency }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ transaction.membership_type.value.title() if transaction.membership_type else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm);">
+                                            {{ transaction.status.value.title() if transaction.status else 'N/A' }}
+                                        </td>
+                                        <td style="padding: var(--spacing-sm); font-size: 0.875rem;">
+                                            {{ transaction.stripe_payment_intent_id or 'N/A' }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No transactions found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
