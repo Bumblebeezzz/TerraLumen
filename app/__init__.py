@@ -34,6 +34,13 @@ def create_app(config_name='development'):
     login_manager.init_app(app)
     csrf.init_app(app)
     
+    # Initialize database tables on first run
+    with app.app_context():
+        try:
+            db.create_all()
+        except Exception:
+            pass  # Tables might already exist
+    
     # Configure login manager
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Please log in to access this page.'
