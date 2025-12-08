@@ -4,14 +4,20 @@ Application Configuration
 
 import os
 from pathlib import Path
+from urllib.parse import quote_plus
 
 basedir = Path(__file__).resolve().parent.parent.parent
 
 class Config:
     """Base configuration"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        f'sqlite:///{basedir}/instance/terralumen.db'
+    # Use absolute path with URL encoding for spaces
+    if os.environ.get('DATABASE_URL'):
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    else:
+        db_path = os.path.join(str(basedir), 'instance', 'terralumen.db')
+        # SQLite requires 3 slashes for absolute paths, and we need to encode spaces
+        SQLALCHEMY_DATABASE_URI = f'sqlite:///{quote_plus(db_path)}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Stripe configuration
