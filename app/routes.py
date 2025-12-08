@@ -97,6 +97,26 @@ def blog():
                 self.has_next = page < self.pages
                 self.prev_num = page - 1 if self.has_prev else None
                 self.next_num = page + 1 if self.has_next else None
+            
+            def iter_pages(self, left_edge=1, right_edge=1, left_current=2, right_current=2):
+                """Simple page iterator for compatibility"""
+                if self.pages <= 10:
+                    return range(1, self.pages + 1)
+                # For many pages, show first, last, and current area
+                pages = []
+                for i in range(1, min(left_edge + 1, self.pages + 1)):
+                    pages.append(i)
+                if left_edge < self.page - left_current - 1:
+                    pages.append(None)  # Ellipsis
+                for i in range(max(1, self.page - left_current), min(self.page + right_current + 1, self.pages + 1)):
+                    if i not in pages:
+                        pages.append(i)
+                if self.page + right_current < self.pages - right_edge:
+                    pages.append(None)  # Ellipsis
+                for i in range(max(1, self.pages - right_edge + 1), self.pages + 1):
+                    if i not in pages:
+                        pages.append(i)
+                return pages
         
         pagination = SimplePagination(paginated_articles, page, per_page, total)
         
