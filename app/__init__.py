@@ -63,9 +63,16 @@ def create_app(config_name='development'):
     app.register_blueprint(stripe_bp, url_prefix='/stripe')
     
     # Register error handlers
-    from app.routes import page_not_found, internal_server_error
-    app.register_error_handler(404, page_not_found)
-    app.register_error_handler(500, internal_server_error)
+    @app.errorhandler(404)
+    def page_not_found(error):
+        from flask import render_template
+        return render_template('errors/404.html'), 404
+    
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        from flask import render_template
+        db.session.rollback()
+        return render_template('errors/500.html'), 500
     
     return app
 
