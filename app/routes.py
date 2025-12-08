@@ -51,31 +51,55 @@ def contact():
 
 @main_bp.route('/blog')
 def blog():
-    """Blog listing page"""
+    """Blog listing page - No database required"""
+    from app.utils.blog_loader import get_published_articles
+    from flask_login import current_user
+    
+    # Get published articles (filter member-only if user is not authenticated)
+    is_member = current_user.is_authenticated and hasattr(current_user, 'is_active_member') and current_user.is_active_member()
+    articles = get_published_articles(member_only=False)
+    
+    # If user is authenticated member, also include member-only articles
+    if is_member:
+        member_articles = get_published_articles(member_only=True)
+        all_articles = articles + [a for a in member_articles if a.is_member_only]
+        articles = sorted(all_articles, key=lambda x: x.published_at or datetime.min, reverse=True)
+    
+    # Simple pagination
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config.get('POSTS_PER_PAGE', 10)
+    total = len(articles)
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_articles = articles[start:end]
     
-    # Get published articles (public only, or member-only if user is authenticated)
-    query = Article.query.filter(Article.published_at.isnot(None))
-    query = query.filter(Article.published_at <= datetime.utcnow())
+    # Create simple pagination object
+    class SimplePagination:
+        def __init__(self, items, page, per_page, total):
+            self.items = items
+            self.page = page
+            self.per_page = per_page
+            self.total = total
+            self.pages = (total + per_page - 1) // per_page
+            self.has_prev = page > 1
+            self.has_next = page < self.pages
+            self.prev_num = page - 1 if self.has_prev else None
+            self.next_num = page + 1 if self.has_next else None
     
-    # If user is not authenticated, only show public articles
-    from flask_login import current_user
-    if not current_user.is_authenticated or not current_user.is_active_member():
-        query = query.filter(Article.is_member_only == False)
+    pagination = SimplePagination(paginated_articles, page, per_page, total)
     
-    # Order by published date (newest first)
-    query = query.order_by(Article.published_at.desc())
-    
-    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    articles = pagination.items
-    
-    return render_template('blog.html', articles=articles, pagination=pagination)
+    return render_template('blog.html', articles=paginated_articles, pagination=pagination)
 
 @main_bp.route('/blog/<slug>')
 def article(slug):
-    """Individual article page"""
-    article = Article.query.filter_by(slug=slug).first_or_404()
+    """Individual article page - No database required"""
+    from app.utils.blog_loader import get_article_by_slug
+    from flask_login import current_user
+    
+    article = get_article_by_slug(slug)
+    if not article:
+        from flask import abort
+        abort(404)
     
     # Check if article is published
     if not article.is_published():
@@ -83,9 +107,9 @@ def article(slug):
         return redirect(url_for('main.blog'))
     
     # Check if article is member-only and user has access
-    from flask_login import current_user
     if article.is_member_only:
-        if not current_user.is_authenticated or not current_user.is_active_member():
+        is_member = current_user.is_authenticated and hasattr(current_user, 'is_active_member') and current_user.is_active_member()
+        if not is_member:
             flash('This article is available to members only. Please log in or become a member to access it.', 'info')
             return redirect(url_for('auth.login'))
     
