@@ -53,15 +53,29 @@ def create_app(config_name='development'):
             return None
     
     # Register blueprints
-    from app.routes import main_bp
-    from app.auth import auth_bp
-    from app.admin import admin_bp
-    from app.stripe_handler import stripe_bp
+    try:
+        from app.routes import main_bp
+        app.register_blueprint(main_bp)
+    except Exception as e:
+        app.logger.error(f"Failed to register main_bp: {e}")
     
-    app.register_blueprint(main_bp)
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(admin_bp, url_prefix='/admin')
-    app.register_blueprint(stripe_bp, url_prefix='/stripe')
+    try:
+        from app.auth import auth_bp
+        app.register_blueprint(auth_bp, url_prefix='/auth')
+    except Exception as e:
+        app.logger.error(f"Failed to register auth_bp: {e}")
+    
+    try:
+        from app.admin import admin_bp
+        app.register_blueprint(admin_bp, url_prefix='/admin')
+    except Exception as e:
+        app.logger.error(f"Failed to register admin_bp: {e}")
+    
+    try:
+        from app.stripe_handler import stripe_bp
+        app.register_blueprint(stripe_bp, url_prefix='/stripe')
+    except Exception as e:
+        app.logger.error(f"Failed to register stripe_bp: {e}")
     
     # Register error handlers
     @app.errorhandler(404)
