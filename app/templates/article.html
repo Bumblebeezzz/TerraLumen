@@ -26,14 +26,9 @@
                             Published: {{ article.published_at.strftime('%B %d, %Y') }}
                         </span>
                     {% endif %}
-                    {% if article.reading_time() %}
-                        <span>
-                            {{ article.reading_time() }} min read
-                        </span>
-                    {% endif %}
                     {% if article.author %}
                         <span>
-                            By {{ article.author.name }}
+                            By {{ article.author }}
                         </span>
                     {% endif %}
                 </div>
@@ -54,7 +49,7 @@
                     </p>
                 {% endif %}
                 
-                <div style="white-space: pre-wrap;">{{ article.content }}</div>
+                <div style="white-space: pre-wrap;">{{ article.content | safe }}</div>
             </div>
             
             <div class="card-footer" style="border-top: 1px solid var(--color-border); padding-top: var(--spacing-md); margin-top: var(--spacing-lg);">

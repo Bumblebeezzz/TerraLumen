@@ -57,7 +57,7 @@
                         </div>
                         
                         <div class="card-body">
-                            {% if article.excerpt %}
+                            <p>{{ article.excerpt or (article.content[:200] + '...' if article.content and article.content|length > 200 else (article.content or '')) }}</p>{% if article.excerpt %}
                                 <p>{{ article.excerpt }}</p>
                             {% else %}
                                 <p>{{ article.content[:200] }}...</p>
