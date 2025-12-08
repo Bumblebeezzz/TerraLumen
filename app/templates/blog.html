@@ -68,11 +68,6 @@
                             <a href="{{ url_for('main.article', slug=article.slug) }}" class="btn btn-outline">
                                 Read More
                             </a>
-                            {% if article.reading_time() %}
-                                <span style="color: var(--color-charcoal); font-size: 0.875rem; margin-left: var(--spacing-sm);">
-                                    {{ article.reading_time() }} min read
-                                </span>
-                            {% endif %}
                         </div>
                     </article>
                 {% endfor %}
