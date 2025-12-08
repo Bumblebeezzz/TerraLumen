@@ -7,6 +7,11 @@
 {% block content %}
 <!-- Hero Section -->
 <section class="hero">
+    <!-- Background Video -->
+    <video class="hero-video" autoplay muted loop playsinline>
+        <source src="{{ url_for('static', filename='video/terralumen-hero.mp4') }}" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1 class="hero-title">TerraLumen</h1>
         <p class="hero-subtitle">
