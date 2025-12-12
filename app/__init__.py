@@ -136,3 +136,18 @@ def create_app(config_name='development'):
     
     print("✓ Flask app initialization complete!", file=sys.stderr)
     return app
+
+# Export app instance for gunicorn when using 'gunicorn app:app'
+# This allows Render's auto-detection to work
+try:
+    # Only create app if we're being imported as a module (not during package init)
+    import sys
+    if 'gunicorn' in sys.modules or 'wsgi' in sys.modules or hasattr(sys, '_getframe'):
+        # Check if we're being called from gunicorn
+        app_instance = create_app()
+        # Make app available at module level for gunicorn
+        if not hasattr(sys.modules[__name__], 'app'):
+            sys.modules[__name__].app = app_instance
+except Exception:
+    # If app creation fails, don't break the package import
+    pass
