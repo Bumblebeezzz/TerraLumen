@@ -29,7 +29,7 @@ def create_app(config_name='development'):
         from app.config import Config
         app.config.from_object(Config)
     except Exception as e:
-        app.logger.error(f"Failed to load config: {e}")
+        print(f"ERROR: Failed to load config: {e}")
         raise
     
     # Initialize extensions with app
@@ -37,21 +37,6 @@ def create_app(config_name='development'):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
-    
-    # Initialize database tables if they don't exist (for first deployment)
-    # This will be handled by migrations on Render, but we ensure tables exist as fallback
-    with app.app_context():
-        try:
-            # Try to connect and check if tables exist
-            with db.engine.connect() as conn:
-                inspector = db.inspect(db.engine)
-                if inspector.has_table('users'):
-                    app.logger.info("Database tables already exist")
-                else:
-                    app.logger.info("Creating database tables...")
-                    db.create_all()
-        except Exception as e:
-            app.logger.warning(f"Database initialization check failed: {e}. Migrations will handle this.")
     
     # Configure login manager
     login_manager.login_view = 'auth.login'
@@ -73,33 +58,41 @@ def create_app(config_name='development'):
         from app.routes import main_bp
         app.register_blueprint(main_bp)
     except Exception as e:
-        app.logger.error(f"Failed to register main_bp: {e}")
+        if hasattr(app, 'logger'):
+            app.logger.error(f"Failed to register main_bp: {e}")
         import traceback
         traceback.print_exc()
+        raise
     
     try:
         from app.auth import auth_bp
         app.register_blueprint(auth_bp, url_prefix='/auth')
     except Exception as e:
-        app.logger.error(f"Failed to register auth_bp: {e}")
+        if hasattr(app, 'logger'):
+            app.logger.error(f"Failed to register auth_bp: {e}")
         import traceback
         traceback.print_exc()
+        raise
     
     try:
         from app.admin import admin_bp
         app.register_blueprint(admin_bp, url_prefix='/admin')
     except Exception as e:
-        app.logger.error(f"Failed to register admin_bp: {e}")
+        if hasattr(app, 'logger'):
+            app.logger.error(f"Failed to register admin_bp: {e}")
         import traceback
         traceback.print_exc()
+        raise
     
     try:
         from app.stripe_handler import stripe_bp
         app.register_blueprint(stripe_bp, url_prefix='/stripe')
     except Exception as e:
-        app.logger.error(f"Failed to register stripe_bp: {e}")
+        if hasattr(app, 'logger'):
+            app.logger.error(f"Failed to register stripe_bp: {e}")
         import traceback
         traceback.print_exc()
+        raise
     
     # Register error handlers
     @app.errorhandler(404)
