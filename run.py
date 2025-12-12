@@ -3,9 +3,16 @@ Application entry point
 """
 
 import os
-from app import create_app, db
+import sys
 
-app = create_app()
+try:
+    from app import create_app, db
+    app = create_app()
+except Exception as e:
+    print(f"Error creating app: {e}", file=sys.stderr)
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
 
 @app.shell_context_processor
 def make_shell_context():

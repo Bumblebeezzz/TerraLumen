@@ -2,7 +2,7 @@ services:
   - type: web
     name: terralumen
     env: python
-    buildCommand: pip install -r requirements.txt && flask db upgrade
+    buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app
     envVars:
       - key: FLASK_ENV

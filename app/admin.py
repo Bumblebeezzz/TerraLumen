@@ -5,7 +5,7 @@ Admin panel routes
 from flask import Blueprint, render_template, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user
 from app import db
-from app.models import User, Article, MembershipTransaction
+from app.models import User, Article, MembershipTransaction, MembershipStatus
 from datetime import datetime
 import re
 
