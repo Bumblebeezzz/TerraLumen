@@ -11,8 +11,11 @@ from flask_wtf.csrf import CSRFProtect
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables (silently fail if .env doesn't exist)
+try:
+    load_dotenv()
+except Exception:
+    pass  # .env file is optional
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -54,45 +57,49 @@ def create_app(config_name='development'):
             return None
     
     # Register blueprints
+    # Main routes (required)
     try:
         from app.routes import main_bp
         app.register_blueprint(main_bp)
     except Exception as e:
-        if hasattr(app, 'logger'):
-            app.logger.error(f"Failed to register main_bp: {e}")
+        print(f"ERROR: Failed to register main_bp: {e}")
         import traceback
         traceback.print_exc()
         raise
     
+    # Auth routes (required)
     try:
         from app.auth import auth_bp
         app.register_blueprint(auth_bp, url_prefix='/auth')
     except Exception as e:
-        if hasattr(app, 'logger'):
-            app.logger.error(f"Failed to register auth_bp: {e}")
+        print(f"ERROR: Failed to register auth_bp: {e}")
         import traceback
         traceback.print_exc()
         raise
     
+    # Admin routes (optional - only if admin module exists)
     try:
         from app.admin import admin_bp
         app.register_blueprint(admin_bp, url_prefix='/admin')
+    except ImportError:
+        # Admin module is optional
+        pass
     except Exception as e:
-        if hasattr(app, 'logger'):
-            app.logger.error(f"Failed to register admin_bp: {e}")
+        print(f"WARNING: Failed to register admin_bp: {e}")
         import traceback
         traceback.print_exc()
-        raise
     
+    # Stripe routes (optional - only if stripe module exists)
     try:
         from app.stripe_handler import stripe_bp
         app.register_blueprint(stripe_bp, url_prefix='/stripe')
+    except ImportError:
+        # Stripe module is optional
+        pass
     except Exception as e:
-        if hasattr(app, 'logger'):
-            app.logger.error(f"Failed to register stripe_bp: {e}")
+        print(f"WARNING: Failed to register stripe_bp: {e}")
         import traceback
         traceback.print_exc()
-        raise
     
     # Register error handlers
     @app.errorhandler(404)

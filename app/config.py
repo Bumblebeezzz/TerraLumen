@@ -5,7 +5,12 @@ Application Configuration
 import os
 from pathlib import Path
 
-basedir = Path(__file__).resolve().parent.parent.parent
+# Get base directory - handle both development and production paths
+try:
+    basedir = Path(__file__).resolve().parent.parent.parent
+except Exception:
+    # Fallback if path resolution fails
+    basedir = Path(os.getcwd())
 
 class Config:
     """Base configuration"""
