@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+echo "Starting TerraLumen with gunicorn..."
+exec gunicorn run:app --bind 0.0.0.0:${PORT:-5000} --workers 2 --timeout 30 --access-logfile - --error-logfile -
