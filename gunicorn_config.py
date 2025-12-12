@@ -9,11 +9,13 @@ bind = f"0.0.0.0:{os.environ.get('PORT', '5000')}"
 backlog = 2048
 
 # Worker processes
-workers = multiprocessing.cpu_count() * 2 + 1
+# Use fewer workers on Render to avoid memory issues
+workers = min(multiprocessing.cpu_count() * 2 + 1, 4)
 worker_class = 'sync'
 worker_connections = 1000
 timeout = 30
 keepalive = 2
+graceful_timeout = 30
 
 # Logging
 accesslog = '-'

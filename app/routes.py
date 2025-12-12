@@ -8,6 +8,11 @@ from datetime import datetime
 
 main_bp = Blueprint('main', __name__)
 
+@main_bp.route('/health')
+def health():
+    """Health check endpoint for Render"""
+    return {'status': 'ok', 'service': 'terralumen'}, 200
+
 @main_bp.route('/')
 def index():
     """Homepage"""
